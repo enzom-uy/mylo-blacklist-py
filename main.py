@@ -1,6 +1,6 @@
 import os
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
 
 discord_token = os.environ.get('DISCORD_BLACKLIST_TOKEN')
 mongo_url = os.environ.get('MONGO_BLACKLIST_URL')
@@ -40,6 +40,8 @@ async def add(ctx, attachment: discord.Attachment | None, *, flags: AddUserFlags
     gcImage = None
     if attachment:
         gcImage = attachment.url
+    else:
+        gcImage = ""
 
     already_exists = users_collection.find_one({"id": gcId})
     if already_exists:
