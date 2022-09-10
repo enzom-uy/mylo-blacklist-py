@@ -1,6 +1,6 @@
-from _typeshed import NoneType
 import os
 import discord
+from discord.app_commands.transformers import NoneType
 from discord.ext import commands
 
 discord_token = os.environ.get('DISCORD_BLACKLIST_TOKEN')
