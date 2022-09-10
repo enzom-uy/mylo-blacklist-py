@@ -1,5 +1,5 @@
+from _typeshed import NoneType
 import os
-from types import NoneType
 import discord
 from discord.ext import commands
 
