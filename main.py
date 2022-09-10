@@ -1,4 +1,5 @@
 import os
+from typing import List
 import discord
 from discord.ext import commands
 
@@ -32,16 +33,25 @@ class AddUserFlags(commands.FlagConverter):  # Flags for the !add command
     perfil: str
 
 
+@bot.command()
+async def ayuda(ctx):
+    embed = discord.Embed(
+        title="Cómo usar el bot y no parecer un Mateo Cornetta",
+        description="El formato para agregar a alguien nuevo a la blacklist es:\n\n!add nombre: [NOMBRE] id: [ID] perfil: [LINK DE GC]\n**Obligatorio adjuntar una captura del perfil**\n\n Ejemplo:",
+        color=0x32213a,
+    )
+    embed.set_image(url="https://i.imgur.com/fgpUIQf.png")
+    await ctx.send(embed=embed)
+
+
 @bot.command()  # Add new user to blacklist command
-async def add(ctx, attachment: discord.Attachment or None, *, flags: AddUserFlags,):
+async def add(ctx, attachment: discord.Attachment, *, flags: AddUserFlags,):
     gcName = flags.nombre
     gcId = flags.id
     gcUrl = flags.perfil
     gcImage = None
     if attachment:
         gcImage = attachment.url
-    else:
-        gcImage = ""
 
     already_exists = users_collection.find_one({"id": gcId})
     if already_exists:
@@ -55,6 +65,15 @@ async def add(ctx, attachment: discord.Attachment or None, *, flags: AddUserFlag
     }
 
     users_collection.insert_one(new_document)
-    await ctx.send(f'Se agregó al pete de {gcName}, con GC ID: {gcId} a la blacklist. {gcImage}')
+    embed = discord.Embed(
+        title=f"Agregaste a {gcName} la blacklist 💀",
+        color=0x32213a,
+    )
+    embed.add_field(name="Nombre", value=gcName)
+    embed.add_field(name="GC Id", value=gcId)
+    embed.add_field(name="Perfil de GC", value=gcUrl)
+    embed.add_field(name="Captura", value=gcImage)
+    embed.set_image(url=gcImage)
+    await ctx.send(embed=embed)
 
 bot.run(f"{discord_token}")
