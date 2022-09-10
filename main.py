@@ -1,4 +1,5 @@
 import os
+from types import NoneType
 import discord
 from discord.ext import commands
 
@@ -33,7 +34,7 @@ class AddUserFlags(commands.FlagConverter):  # Flags for the !add command
 
 
 @bot.command()  # Add new user to blacklist command
-async def add(ctx, attachment: discord.Attachment | None, *, flags: AddUserFlags,):
+async def add(ctx, attachment: discord.Attachment | NoneType, *, flags: AddUserFlags,):
     gcName = flags.nombre
     gcId = flags.id
     gcUrl = flags.perfil
