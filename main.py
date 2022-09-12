@@ -2,6 +2,7 @@ import os
 import discord
 from discord.ext import commands
 from cogs.add import get_database
+from discord.utils import get
 
 discord_token = os.environ.get('DISCORD_BLACKLIST_TOKEN')
 mongo_url = os.environ.get('MONGO_BLACKLIST_URL')
@@ -36,11 +37,17 @@ async def clear(ctx, number):
     await ctx.channel.purge(limit=number)
 
 
-@bot.command(pass_context=True)
+@bot.command()
 async def blacklist(ctx):
     db = get_database()
     users_collection = db["users"]
     users = users_collection.find()
-    return print(users)
+    users_names = []
+
+    for user in users:
+        users_names.append(user["nombre"])
+
+    stringified_users_names = " \n".join(users_names)
+    await ctx.send(stringified_users_names)
 
 bot.run(f"{discord_token}")
