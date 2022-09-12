@@ -22,7 +22,7 @@ class Add(commands.Cog):
         name="add",
         description="Agrega un nuevo usuario a la blacklist."
     )
-    async def add(self, interaction: Interaction, nombre: str, id: str, perfil: str, attachment: discord.Attachment) -> None:
+    async def add(self, interaction: Interaction, nombre: str, id: int, perfil: str, attachment: discord.Attachment) -> None:
 
         blacklist_db = get_database()
         users_collection = blacklist_db["users"]
