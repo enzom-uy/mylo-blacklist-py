@@ -2,8 +2,11 @@ import discord
 from discord.ext import commands
 
 
+mylo_token = 495778166611116042
+
+
 class Ayuda(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
     @commands.command()
@@ -14,8 +17,11 @@ class Ayuda(commands.Cog):
             color=0x32213a,
         )
         embed.set_image(url="https://i.imgur.com/fgpUIQf.png")
-        return await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
-def setup(bot):
-    bot.add_cog(Ayuda(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(
+        Ayuda(bot),
+        guilds=[discord.Object(id=mylo_token)]
+    )
