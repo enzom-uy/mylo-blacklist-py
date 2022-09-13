@@ -18,8 +18,17 @@ class Search(commands.Cog):
 
         user_exists = users_collection.find_one({"id": id})
         if user_exists:
-            self.bot.is_owner
-            return await interaction.response.send_message(f'{user_exists["nombre"]} existe en la Blacklist.')
+            embed = discord.Embed(
+                title=f"{user_exists['nombre']} 💀",
+                color=0x32213a,
+            )
+
+            embed.add_field(name="Nombre", value=user_exists["nombre"])
+            embed.add_field(name="GC Id", value=user_exists["id"])
+            embed.add_field(name="Perfil de GC", value=user_exists["perfil"])
+            embed.add_field(name="Captura", value=user_exists["imagen"])
+            embed.set_image(url=user_exists["imagen"])
+            return await interaction.response.send_message(embed=embed)
         else:
             return await interaction.response.send_message("No existe en la Blacklist.")
 
